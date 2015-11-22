@@ -7,4 +7,4 @@
 *.pyc
 
 # jpg data:
-data/*.jpg
+src/dataset/*.jpg
