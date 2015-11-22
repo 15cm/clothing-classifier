@@ -9,7 +9,9 @@ class MyTestCase(unittest.TestCase):
     def test_something(self):
         sp = SuperPixel('3.jpg')
         sp.segment()
-        print sp.mask
+        sp.count_descriptors()
+        pixel_list = sp.pixel_list
+        print pixel_list
 
 
 if __name__ == '__main__':

@@ -21,22 +21,28 @@ def train_bow_sift(id_upper):
     sift = Sift()
     kmeans = KmeansModel()
     image_list = sorted([x for x in os.listdir(DATAPATH) if os.path.splitext(x)[1] == '.jpg' and int(os.path.splitext(x)[0]) < id_upper],key=lambda x: int(os.path.splitext(x)[0]))
-    descriptors_list = sift.compute(image_list)
+    sift.compute(image_list)
     if not kmeans.load('kmeans_sift'):
-        kmeans.fit(descriptors_list)
+        kmeans.fit(sift.descriptors_list)
         kmeans.save('kmeans_sift')
 
     bow = Bow(kmeans)
     # bag of words of samples
     # label indicator1 indicator2 ...
     # ...   ...        ...        ...
-    bow.train_sift(descriptors_list)
+    bow.train_sift(sift.descriptors_list)
     # labels of samples
 
 def train_bow_pixel():
     kmeans_sift = KmeansModel()
+    sift = Sift()
     if not kmeans_sift.load('kmeans_sift'):
         print 'kmeans_sift not found!'
+    if not sift.load():
+        print 'no sift data found!'
+        exit(1)
+
+
 
 
 

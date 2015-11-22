@@ -6,6 +6,7 @@ Copyright © 2015 15cm. All rights reserved.
 __author__ = '15cm'
 
 from data.data_handler import DataHandler
+from feature.superpixel import SuperPixel
 from mynp import np
 import os
 
@@ -31,8 +32,13 @@ class Bow:
         # save sample data
         np.savetxt(os.path.join(self.bow_path,'bow_sift.txt'),sample_data)
 
-    def train_pixel(self,X_list):
-        pass
+    def train_pixel(self,image_list):
+        superpixel_list = [SuperPixel(x) for x in image_list]
+        for sp in superpixel_list:
+            sp.segment()
+            sp.count_descriptors()
+            # for
+
 
     def compute(self,X):
         bow = [0 for x in range(self.kmeans.n_cluster)]

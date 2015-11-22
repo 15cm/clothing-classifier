@@ -41,16 +41,17 @@ class SuperPixel:
             self.mask[segVal == self.segments] = i
             self.pixel_list.append(self.Pixel(i))
 
-    def count_descriptors(self):
-        sift = Sift()
-        kd_des = sift.detect_and_compute(self.img)
-        for i in range(len(kd_des[0])):
-            kd = kd_des[0][i]
-            id = self.mask[int(kd[0][0]),kd[0][1]]
+    def count_descriptors(self,sift):
+        kp_list = sift.keypoints_list
+        des_list = sift.descriptors_list
+        for i in range(len(kp_list)):
+            id = self.mask[int(kp_list[i]),int(kp_list)]
             if id != -1:
-                self.pixel_list[id].add_descriptor(kd_des[1][i])
+                self.pixel_list[id].add_descriptor(des_list[i])
         pixel_num = len(self.pixel_list)
         self.pixel_list = sorted(self.pixel_list,key=lambda x: x.num(),reverse=True)[:int(pixel_num/2)]
+        self.pixel_list = list(filter(lambda x: x.num() > 0,self.pixel_list))
+        print 'ok'
 
 
 
