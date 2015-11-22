@@ -12,6 +12,7 @@ import numpy as np
 from PIL import Image
 import io
 import os
+import sys
 
 def download_stuff(stuff):
     image_bytes = urllib2.urlopen(stuff.link).read()
@@ -104,6 +105,7 @@ class DataHandler:
 
     def tell_label(self,label):
         return self.label_list[label]
+
 
 
 
