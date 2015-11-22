@@ -8,3 +8,6 @@
 
 # jpg data:
 src/dataset/*.jpg
+
+# model data:
+model/*
