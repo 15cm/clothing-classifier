@@ -1,0 +1,10 @@
+# invisible:
+.DS_Store
+.idea/*
+.tags
+
+# python:
+*.pyc
+
+# jpg data:
+data/*.jpg
