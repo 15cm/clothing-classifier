@@ -7,7 +7,7 @@ __author__ = '15cm'
 
 import os
 import cv2
-import numpy as np
+from mynp import np
 from skimage.segmentation import slic
 from skimage.util import img_as_float
 
