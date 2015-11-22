@@ -16,7 +16,7 @@ CURPATH = os.path.split(os.path.realpath(__file__))[0]
 class KmeansModel:
     def __init__(self):
         self.kmeans = KMeans(n_clusters=15,n_init=15)
-        self.model_path =os.path.join(os.path.join(CURPATH,'model'),'kmeans.pkl')
+        self.model_path = os.path.join(CURPATH,'model')
 
     def fit(self,X):
         if type(X) == list:
@@ -37,9 +37,9 @@ class KmeansModel:
         else:
             return self.kmeans.predict(X)
 
-    def save(self):
-        joblib.dump(self.kmeans,self.model_path)
+    def save(self,model_name):
+        joblib.dump(self.kmeans,os.path.join(self.model_path,model_name + 'pkl'))
 
-    def load(self):
-        self.kmeans = joblib.load(self.model_path)
+    def load(self,model_name):
+        self.kmeans = joblib.load(os.path.join(self.model_path,model_name + 'pkl'))
         self.n_clusters = self.kmeans.n_clusters

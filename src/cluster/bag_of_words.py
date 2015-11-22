@@ -15,9 +15,9 @@ class Bow:
 
     def __init__(self,kmeans):
         self.kmeans = kmeans
-        self.bow_path =os.path.join(os.path.join(CURPATH,'bow'),'bow.txt')
+        self.bow_path = os.path.join(CURPATH,'bow')
 
-    def train(self,X_list):
+    def train(self,X_list,bow_name):
         bow_list = []
         for X in X_list:
             bow_list.append(self.kmeans.predict(X))
@@ -38,7 +38,7 @@ class Bow:
             bow[i] += 1
         return bow
 
-    def load(self):
+    def load(self,bow_name):
         self.bow_matrix = np.loadtxt(self.bow_path)
 
 
