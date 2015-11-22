@@ -30,4 +30,8 @@ class Sift:
             gray_im = cv2.cvtColor(cv2.imread(f),cv2.COLOR_BGR2GRAY)
             return self.sift.detectAndCompute(gray_im,None)[1]
 
+    def detect_and_compute(self,img):
+        gray_im = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+        return self.sift.detectAndCompute(gray_im,None)
+
 

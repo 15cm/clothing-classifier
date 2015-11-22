@@ -6,9 +6,10 @@ Copyright © 2015 15cm. All rights reserved.
 __author__ = '15cm'
 
 import argparse
-from data.train import train_bow,train_clf
+from data.train import train_bow_sift,train_bow_pixel,train_clf
 from data.data_handler import DataHandler
 from cluster.kmeans_model import KmeansModel
+from classifier.clf_model import RandomForest
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(prog='clothes_parser.py',description='A Clothes Classifier')
@@ -25,9 +26,9 @@ if __name__ == '__main__':
     if args.cmd == 'train':
         if args.b:
             if args.s:
-                train_bow('bow_sift',args.id_upper)
+                train_bow_sift(args.id_upper)
             elif args.p:
-                train_bow('bow_pixel',args.id_upper)
+                train_bow_pixel()
         if args.c:
             train_clf('pixel')
 
@@ -36,13 +37,10 @@ if __name__ == '__main__':
         kmeans.load('kmeans_pixel')
         clf = RandomForest()
         clf.load()
-        data = MetaData()
+        data = DataHandler()
         data.load()
         if args.file:
-            for res in clf.predict(kmeans,image = os.path.join('test',args.file)):
-                print int(res),data.tell_label(int(res))
-        else:
-            for res in clf.predict(kmeans,image_list=sorted([x for x in os.listdir('test') if os.path.splitext(x)[1] == '.jpg'],key=lambda x: os.path.splitext(x)[0])):
+            for res in clf.predict(kmeans,file):
                 print int(res),data.tell_label(int(res))
 
     if args.cmd == 'data':

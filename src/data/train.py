@@ -15,23 +15,30 @@ import os
 CURPATH = os.path.split(os.path.realpath(__file__))[0]
 DATAPATH = os.path.join(os.path.dirname(CURPATH),'dataset')
 
-def train_bow(bow_name,id_upper):
+def train_bow_sift(id_upper):
     if not id_upper:
         id_upper = 3900
     sift = Sift()
     kmeans = KmeansModel()
     image_list = sorted([x for x in os.listdir(DATAPATH) if os.path.splitext(x)[1] == '.jpg' and int(os.path.splitext(x)[0]) < id_upper],key=lambda x: int(os.path.splitext(x)[0]))
     descriptors_list = sift.compute(image_list)
-    kmeans.fit(descriptors_list)
-    kmeans.save(bow_name)
-
+    if not kmeans.load('kmeans_sift'):
+        kmeans.fit(descriptors_list)
+        kmeans.save('kmeans_sift')
 
     bow = Bow(kmeans)
     # bag of words of samples
     # label indicator1 indicator2 ...
     # ...   ...        ...        ...
-    bow.train(descriptors_list,bow_name)
+    bow.train_sift(descriptors_list)
     # labels of samples
+
+def train_bow_pixel():
+    kmeans_sift = KmeansModel()
+    if not kmeans_sift.load('kmeans_sift'):
+        print 'kmeans_sift not found!'
+
+
 
 def train_clf(bow_name):
     data = np.loadtxt(bow_name)

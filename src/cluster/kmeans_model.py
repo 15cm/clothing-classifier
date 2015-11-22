@@ -31,15 +31,16 @@ class KmeansModel:
         return self.n_clusters
 
     def predict(self,X):
-        if type(X) == str:
-            sift = Sift()
-            return self.kmeans.predict(sift.compute(X))
-        else:
-            return self.kmeans.predict(X)
+        return self.kmeans.predict(X)
 
     def save(self,model_name):
-        joblib.dump(self.kmeans,os.path.join(self.model_path,model_name + 'pkl'))
+        joblib.dump(self.kmeans,os.path.join(self.model_path,model_name + '.pkl'))
 
     def load(self,model_name):
-        self.kmeans = joblib.load(os.path.join(self.model_path,model_name + 'pkl'))
-        self.n_clusters = self.kmeans.n_clusters
+        model_file = os.path.join(self.model_path,model_name + '.pkl')
+        if os.path.exists(model_file):
+            self.kmeans = joblib.load(model_file)
+            self.n_clusters = self.kmeans.n_clusters
+            return True
+        else:
+            return False

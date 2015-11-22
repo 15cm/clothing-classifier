@@ -17,10 +17,10 @@ class Bow:
         self.kmeans = kmeans
         self.bow_path = os.path.join(CURPATH,'bow')
 
-    def train(self,X_list,bow_name):
+    def train_sift(self,X_list):
         bow_list = []
         for X in X_list:
-            bow_list.append(self.kmeans.predict(X))
+            bow_list.append(self.compute(X))
         self.bow_matrix = reduce(np.vstack,bow_list)
         dh = DataHandler()
         dh.load()
@@ -29,10 +29,13 @@ class Bow:
             sample_y[i][0] = dh.get_lables(id=i)
         sample_data = np.hstack(sample_y,self.bow_matrix)
         # save sample data
-        np.savetxt(self.bow_path,sample_data)
+        np.savetxt(os.path.join(self.bow_path,'bow_sift.txt'),sample_data)
 
-    def compute(self,kmeans,X):
-        bow = [0 for x in range(kmeans.n_cluster)]
+    def train_pixel(self,X_list):
+        pass
+
+    def compute(self,X):
+        bow = [0 for x in range(self.kmeans.n_cluster)]
         clusters = self.kmeans.predict(X)
         for i in clusters:
             bow[i] += 1

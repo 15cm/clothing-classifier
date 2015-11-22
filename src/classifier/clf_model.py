@@ -26,13 +26,16 @@ class RandomForest:
     def load(self):
         self.rf = joblib.load(self.model_path)
 
-    # def predict(self,kmeans,file):
-    #     if image:
-    #         X = bow.compute_bow(kmeans,image)
-    #     elif image_list:
-    #         descriptors_list = [sift.get_descriptors(os.path.join('test',x)) for x in image_list] # 128-dimension descriptors for every image
-    #         X = bow.compute_bow_matrix(kmeans,descriptors_list)
-    #     else:
-    #         print 'image or image_list should be provided'
-    #         exit(1)
-    #     return self.rf.predict(X)
+    def predict(self,kmeans,file):
+        pass
+        # if hasattr(file,'__iter__'):
+        #
+        # if image:
+        #     X = bow.compute_bow(kmeans,image)
+        # elif image_list:
+        #     descriptors_list = [sift.get_descriptors(os.path.join('test',x)) for x in image_list] # 128-dimension descriptors for every image
+        #     X = bow.compute_bow_matrix(kmeans,descriptors_list)
+        # else:
+        #     print 'image or image_list should be provided'
+        #     exit(1)
+        # return self.rf.predict(X)

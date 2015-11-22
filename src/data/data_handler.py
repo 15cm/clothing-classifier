@@ -12,7 +12,9 @@ import numpy as np
 from PIL import Image
 import io
 import os
-import sys
+
+CURPATH = os.path.split(os.path.realpath(__file__))[0]
+DATAPATH = os.path.join(os.path.dirname(CURPATH),'dataset')
 
 def download_stuff(stuff):
     image_bytes = urllib2.urlopen(stuff.link).read()
@@ -24,9 +26,7 @@ def download_stuff(stuff):
         pass
     w,h = pil_image.size
     pil_image.thumbnail((w/3,h/3))
-    pil_image.save(os.path.join('data',str(stuff.id) + '.jpg'),'jpeg')
-
-
+    pil_image.save(os.path.join(DATAPATH,str(stuff.id)+'.jpg'),'jpeg')
 
 class DataHandler:
 
@@ -40,7 +40,8 @@ class DataHandler:
         self.data = [] # [(link,label),...]
         self.label_dict = {}
         self.label_list = []
-        self.data_file = os.path.join('data','data.txt')
+        self.data_file = os.path.join(DATAPATH,'data.txt')
+        self.label_list_file = os.path.join(DATAPATH,'label_list.json')
 
     def label_filter(self,s):
         # valid_word_list = ['衣','裙','裤','长','大','短','单','套','衫','毛']
@@ -58,7 +59,8 @@ class DataHandler:
         return res_str.encode('utf-8')
 
     def parse_data(self,json_file):
-        with open(json_file) as f:
+        file = os.path.join(DATAPATH,json_file)
+        with open(file) as f:
             json_content = json.load(f)
             for item in json_content:
                 id=int(item['id'])
@@ -86,14 +88,14 @@ class DataHandler:
             data_matrix[i][0] = self.data[i].id
             data_matrix[i][1] = self.data[i].label
         np.savetxt(self.data_file,data_matrix)
-        with open('label_list.json','w') as f:
+        with open(self.label_list_file,'w') as f:
             json.dump(self.label_list,f)
 
 
 
     def load(self):
         self.data_matrix = np.loadtxt(self.data_file)
-        with open('label_list.json') as f:
+        with open(self.label_list_file) as f:
             self.label_list = json.load(f)
 
 
